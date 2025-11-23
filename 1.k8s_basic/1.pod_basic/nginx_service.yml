@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  namespace: woonglab
+spec:
+  # type: ClusterIP 
+  # 생략시 default는 ClusterIP.
+  # NodePort, LoadBalancer등의 타입을 사용시 service를 통해 외부접근가능
+  ports:
+  - port: 80
+    #service의 port
+    targetPort: 80
+    #pod의 내부 port
+  selector:
+    app: my-nginx
+    # labels의 name하고 일치해야한다
+    # 그 경우에만 pod가 확장되더라도 알아서 찾아서 연결
+  

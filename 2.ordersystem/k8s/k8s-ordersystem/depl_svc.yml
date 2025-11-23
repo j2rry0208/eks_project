@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordersystem-backend
+  namespace: woonglab
+spec:
+# Deployment나 StatefulSet이 유지할 "옛날 ReplicaSet"의 수를 제한하는 옵션. 자원공간의 낭비 방지 및 관리의 편의성.
+  revisionHistoryLimit: 2
+# 1. depl 수정 -> Replicaset
+# 2. rollout restart -> Replicaset
+# Replicaset 곧 리비전이 새로 만들어짐, 두가지 명령을 실행할 경우 마다 계속 쌓임 자원 낭비, 보통 10개정도로 쌓임
+# 결국 파드가 계속 바뀌는게 아니고 이미지가 변경된다.
+# 관리하기 힘들기 때문에 제한을 둠, 결론 agcd에서 정신이 없다 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ordersystem-backend
+  template:
+    metadata:
+      labels:
+        app: ordersystem-backend
+    spec:
+      containers:
+      - name: ordersystem-backend
+        image: 131745734106.dkr.ecr.ap-northeast-2.amazonaws.com/order-backend:latest
+        ports:
+        - containerPort: 8080
+        # 스프링에서는 보통 기재안하면 8080이 기본임 (경로는 어플리케이션 yml 파일에서 지정)
+        resources:
+        # 컨테이너가 사용할수 있는 리소스의 최대치
+          limits:
+            cpu: "1"
+            memory: "500Mi"
+        # 컨테이너가 시작될떄 보장받아야 하는 최소 자원
+          requests:
+            cpu: "0.5"
+            memory: "250Mi"
+        # 최소/최대 자원을 지정, 안넣으면 ec2자원을 파드가 전부 사용할 수 있음
+        env:
+        # name값과 yml의 ${변수} 의 변수명과 일치해야함
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secrets
+              key: DB_HOST
+        - name: DB_PW
+          valueFrom:
+            secretKeyRef:
+              name: my-app-secrets
+              key: DB_PW
+        # 컨테이너 상태 확인을 통해 롤링업데이트 최적화 -> 스프링서버가 정확하게 올라갔는지 확인하고 이전 파드를 지우겠다.
+        readinessProbe:
+          httpGet:
+            # healthcheck 경로
+            path: /health
+            # 자바프로그램에서 로직도 있어야 함
+            port: 8080
+          # 컨테이너 시작 후 지연
+          initialDelaySeconds: 10
+          # 확인 반복 주기
+          periodSeconds: 10
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ordersystem-backend-service
+  namespace: woonglab
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: ordersystem-backend
