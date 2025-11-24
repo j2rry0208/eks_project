@@ -11,7 +11,7 @@ spec:
 # Replicaset 곧 리비전이 새로 만들어짐, 두가지 명령을 실행할 경우 마다 계속 쌓임 자원 낭비, 보통 10개정도로 쌓임
 # 결국 파드가 계속 바뀌는게 아니고 이미지가 변경된다.
 # 관리하기 힘들기 때문에 제한을 둠, 결론 agcd에서 정신이 없다 
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: ordersystem-backend
