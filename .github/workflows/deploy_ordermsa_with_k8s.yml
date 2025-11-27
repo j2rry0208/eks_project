@@ -35,7 +35,7 @@ jobs:
 
       - name: gateway build and push docker image to ecr
         env:
-          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com
+          REGISTRY: 131745734106.dkr.ecr.ap-northeast-2.amazonaws.com
           REPOSITORY: apigateway
           IMAGE_TAG: latest
         run: |
