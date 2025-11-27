@@ -3,7 +3,7 @@ name: deploy order order-backend
 on:
   push:
     branches:
-      - main
+      - dev
     # 기본 브랜치는 main이며 main의 소스코드 변경사항이 발생하면 아래 job들을 실행하겠다.
 
     # 1. 소스코드 클론 2. kubectl 설치 3. aws cli 설치 및 configure (변수처리 불러옴 -> 깃허브 세팅에 넣어서 보관)  

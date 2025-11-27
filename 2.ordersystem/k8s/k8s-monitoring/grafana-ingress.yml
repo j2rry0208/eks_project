@@ -1,24 +1,24 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: argocd-server-ingress
-  namespace: argocd
+  name: grafana-server-ingress
+  namespace: monitoring
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: my-issuer
 spec:
   tls:
   - hosts:
-      - argo.woonglab.site
-    secretName: argo-woonglab-com-tls
+      - monitor.woonglab.site
+    secretName: monitor-woonglab-com-tls
   rules:
-  - host: argo.woonglab.site
+  - host: monitor.woonglab.site
     http:
       paths:
         - path: /
           pathType: Prefix
           backend:
             service:
-              name: argocd-server
+              name: grafana
               port:
-                number: 80
+                number: 3000

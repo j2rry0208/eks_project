@@ -10,3 +10,5 @@ spec:
     targetPort: 8080  # 실제 argocd-server Pod의 포트
   selector:
     app.kubernetes.io/name: argocd-server
+
+#필요없음

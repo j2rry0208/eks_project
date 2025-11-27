@@ -1,16 +1,15 @@
-
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: argo-woonglab-com-tls
-  namespace: argocd
+  name: monitor-woonglab-com-tls
+  namespace: monitoring
 spec:
-  secretName: argo-woonglab-com-tls
+  secretName: monitor-woonglab-com-tls
   duration: 2160h #90day
   renewBefore: 360h #before 15day
   issuerRef:
     name: my-issuer
     kind: ClusterIssuer
-  commonName: argo.woonglab.site
+  commonName: monitor.woonglab.site
   dnsNames:
-  - argo.woonglab.site
+  - monitor.woonglab.site

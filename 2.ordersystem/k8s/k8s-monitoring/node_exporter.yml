@@ -25,6 +25,7 @@ spec:
           # proc : CPU, 메모리, 프로세스 등의 실시간 정보 제공
           # sys : 커널 상태, 디바이스, 하드웨어 정보 등
           # root : 디스크 사용량
+          # 기본적으로 path는 인스턴스의 호스트 운영체제(리눅스)의 경로이며 그 내용을 파드(컨테이너)로 가져와서 읽는다
             - name: proc
               mountPath: /host/proc
               readOnly: true
