@@ -69,34 +69,34 @@ jobs:
 #apigateway-member 서비스 간의 통신 환경 체크 
 #step2
 #나머지 서비스 통신 환경 체크
-      # - name: order build and push docker image to ecr
-      #   env:
-      #     REGISTRY: 131745734106.dkr.ecr.ap-northeast-2.amazonaws.com
-      #     REPOSITORY: ordering-service
-      #     IMAGE_TAG: latest
-      #   run: |
-      #     docker build \
-      #     -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-      #     -f ./3.msa/ordering/Dockerfile ./3.msa/ordering
-      #     docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      - name: order build and push docker image to ecr
+        env:
+          REGISTRY: 131745734106.dkr.ecr.ap-northeast-2.amazonaws.com
+          REPOSITORY: ordering-service
+          IMAGE_TAG: latest
+        run: |
+          docker build \
+          -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
+          -f ./3.msa/ordering/Dockerfile ./3.msa/ordering
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
   
-      # - name: eks kubectl apply
-      #   run: |
-      #     kubectl apply -f ./3.msa/ordering/k8s/depl_svc.yml
-      #     kubectl rollout restart deployment ordering-depl -n woonglab
+      - name: eks kubectl apply
+        run: |
+          kubectl apply -f ./3.msa/ordering/k8s/depl_svc.yml
+          kubectl rollout restart deployment ordering-depl -n woonglab
           
-      # - name: product build and push docker image to ecr
-      #   env:
-      #     REGISTRY: 131745734106.dkr.ecr.ap-northeast-2.amazonaws.com
-      #     REPOSITORY: product-service
-      #     IMAGE_TAG: latest
-      #   run: |
-      #     docker build \
-      #     -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-      #     -f ./3.msa/product/Dockerfile ./3.msa/product
-      #     docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      - name: product build and push docker image to ecr
+        env:
+          REGISTRY: 131745734106.dkr.ecr.ap-northeast-2.amazonaws.com
+          REPOSITORY: product-service
+          IMAGE_TAG: latest
+        run: |
+          docker build \
+          -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
+          -f ./3.msa/product/Dockerfile ./3.msa/product
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
   
-      # - name: eks kubectl apply
-      #   run: |
-      #     kubectl apply -f ./3.msa/product/k8s/depl_svc.yml
-      #     kubectl rollout restart deployment product-depl -n woonglab
+      - name: eks kubectl apply
+        run: |
+          kubectl apply -f ./3.msa/product/k8s/depl_svc.yml
+          kubectl rollout restart deployment product-depl -n woonglab
